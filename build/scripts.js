@@ -1,6 +1,6 @@
 /**
- * Sýnilausn á verkefni 8 í Vefforritun 1, 2024.
- * Byggir á sýnilausn á verkefni 7.
+ * Lausn á verkefni 8
+ * Sýnilausn á verkefni 7 í Vefforritun 1, 2024.
  * Notar jsdoc til að skrifa lýsingu á föllum, inntaki og úttaki.
  * Kveikið á `Check JS` í Visual Studio Code til að sjá mögulegar villur.
  * Notar `console.assert` til að athuga hvort föll virki rétt.
@@ -13,59 +13,56 @@ import { consonants } from './lib/consonants.js';
 import { palindrome } from './lib/palindrome.js';
 import { reverse } from './lib/reversed.js';
 
-// DOM elements
+// Select DOM elements
 const formElement = document.querySelector('form');
 const textArea = document.getElementById('string');
-const longestElement = document.querySelector('.longest');
-const shortestElement = document.querySelector('.shortest');
-const vowelsElement = document.querySelector('.vowels');
-const consonantsElement = document.querySelector('.consonants');
-const palindromeElement = document.querySelector('.palindrome');
-const reversedElement = document.querySelector('.reversed');
 const outputElement = document.querySelector('.output');
 const resetButton = document.querySelector('button[type="reset"]');
 
+// Result display elements and default values
+const resultElements = {
+  longest: { el: document.querySelector('.longest'), defaultText: 'No words', fn: longest },
+  shortest: { el: document.querySelector('.shortest'), defaultText: 'No words', fn: shortest },
+  vowels: { el: document.querySelector('.vowels'), defaultText: '0', fn: vowels },
+  consonants: { el: document.querySelector('.consonants'), defaultText: '0', fn: consonants },
+  palindrome: { el: document.querySelector('.palindrome'), defaultText: 'not a palindrome', fn: (str) => (palindrome(str) ? 'palindrome' : 'not a palindrome') },
+  reversed: { el: document.querySelector('.reversed'), defaultText: '', fn: reverse }
+};
+
 /**
- * Handler fyrir form submission, skoðar input up updatear DOM
- * @param {Event} event
+ * Handler for form submission; processes input text and updates the DOM with results.
+ * @param {Event} event - The event triggered by form submission.
  */
 function submitHandler(event) {
   event.preventDefault();
 
-  let str = '';
-  if (textArea instanceof HTMLTextAreaElement) {
-    str = textArea.value.trim();
+  const str = textArea?.value.trim();
+  if (!str) return; // If input is empty, do nothing
+
+  // Update each element with its respective function output
+  for (const key in resultElements) {
+    const { el, defaultText, fn } = resultElements[key];
+    el.textContent = fn(str) || defaultText;
   }
 
-  // Skoða og updatea
-  if (longestElement) longestElement.textContent = longest(str) || 'Engin orð';
-  if (shortestElement) shortestElement.textContent = shortest(str) || 'Engin orð';
-  if (vowelsElement) vowelsElement.textContent = vowels(str)?.toString() || '0';
-  if (consonantsElement) consonantsElement.textContent = consonants(str)?.toString() || '0';
-  if (palindromeElement) palindromeElement.textContent = palindrome(str) ? 'samhverfur' : 'ekki samhverfur';
-  if (reversedElement) reversedElement.textContent = reverse(str) || '';
-
-  // Sýna output
-  if (outputElement) {
-    outputElement.classList.remove('hidden');
-  }
+  // Display the output section
+  outputElement?.classList.remove('hidden');
 }
 
 /**
- * Handler fyrir reset button, clearar niðurstöður og felur output
+ * Handler for the reset button; clears all results and hides the output section.
  */
 function resetHandler() {
-    // Check each element before modifying it
-    if (longestElement) longestElement.textContent = '';
-    if (shortestElement) shortestElement.textContent = '';
-    if (vowelsElement) vowelsElement.textContent = '';
-    if (consonantsElement) consonantsElement.textContent = '';
-    if (palindromeElement) palindromeElement.textContent = 'ekki';
-    if (reversedElement) reversedElement.textContent = '';
-  
-    if (outputElement) outputElement.classList.add('hidden');
+  // Reset each element to its default value
+  for (const key in resultElements) {
+    const { el, defaultText } = resultElements[key];
+    el.textContent = defaultText;
   }
-  
-  // Listeners fyrir breytingum
-  if (formElement) formElement.addEventListener('submit', submitHandler);
-  if (resetButton) resetButton.addEventListener('click', resetHandler);
+
+  // Hide the output section
+  outputElement?.classList.add('hidden');
+}
+
+// Attach event listeners
+formElement?.addEventListener('submit', submitHandler);
+resetButton?.addEventListener('click', resetHandler);

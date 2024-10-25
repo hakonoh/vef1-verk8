@@ -13,22 +13,17 @@
 <body>
   <main>
     <h1>Strengjagreinir</h1>
-    <p>Til að greina streng, skrifaðu eða límdu inn í textareitinn og keyrðu <code>Greining</code> eða
-      <code>Hreinsa</code> til að hreinsa texta og niðurstöður.</p>
+    Til þess að greina streng, skrifaðu  eða límdu inn í reitinn og keyrðu
+    <code>Greining</code> eða smelltu á  <code>Hreinsa</code> til að hreinsa texta og niðurstöður.
 
     <form action="." method="get" class="string-form">
       <label for="string">Strengur:</label>
       <textarea id="string" name="string" rows="4" cols="50"></textarea>
       <div class="buttons">
-        <button type="submit">Greining</button>
-        <button type="reset">Hreinsa</button>
+        <button id="analyzeButton" type="submit">Greining</button>
+        <button id="clearButton" type="reset">Hreinsa</button>
       </div>
-      <!--
-        Þetta er sjálfgefið falið með CSS þar til JavaScript kóði keyrir greiningu.
-        Hægt er að sjá hvernig dæmi um greiningu geti litið út með því að fjarlægja `.hidden`
-        og sýna dæmin sem eru skilgreind hér að neðan.
-        JavaScript kóðir fjarlægir dæmin sem eru skilgreind hér að neðan þegar greining er keyrð.
-        -->
+
       <div class="output hidden">
         <p>Fyrir gefinn streng:</p>
         <code class="wide"><pre class="input">Halló hæ heimur!</pre></code>
